@@ -1,12 +1,12 @@
 #!/bin/bash
 ROOTDIR=`pwd`
-KBPATH=${ROOTDIR}/KnowledgeBase/VirtuosoKB/
-
+KBPATH=${ROOTDIR}/KnowledgeBase/VirtuosoKG
+cp -r /home/g1/KnowledgeBase/VirtuosoKG /home/g1/CFO/KnowledgeBase
 # 1. download SimpleQuestionv2
 echo "====> Step 1: download raw data"
 mkdir -p ${ROOTDIR}/RawData
 cd ${ROOTDIR}/RawData
-
+source ~/.profile
 wget https://www.dropbox.com/s/tohrsllcfy7rch4/SimpleQuestions_v2.tgz
 tar -xzf SimpleQuestions_v2.tgz
 
@@ -32,7 +32,7 @@ sleep 10
 
 pids=()
 for i in `seq 1 4`; do
-	./bin/isql 1111 dba dba exec="rdf_loader_run();" &
+        ./bin/isql 1111 dba dba exec="rdf_loader_run();" &
    pids+=($!)
 done
 for pid in ${pids[@]}; do
@@ -42,10 +42,10 @@ done
 # 4. create Vocabs
 echo "====> Step 4: create Vocabs"
 cd ${ROOTDIR}/vocab
-th create_vocab.lua 
+th create_vocab.lua
 
-5. create training data
-ho "====> Step 5: create training data (this will take some time)"
+#5. create training data
+echo "====> Step 5: create training data (this will take some time)"
 
 # 5.1. QAData.pkl
 cd ${ROOTDIR}/SimpleQuestions/PreprocessData
@@ -60,4 +60,4 @@ python generate_training_data.py
 # 5.3. convert .txt data to .t7 format
 cd ${ROOTDIR}
 mkdir ${ROOTDIR}/data
-th process.lua
+                                                                                                                                                                                          47,1          Top
