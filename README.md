@@ -8,6 +8,8 @@ Code repo for [Conditional Focused Neural Question Answering with Large-scale Kn
    - nngraph: `luarocks install nngraph`
 3. After the installation and configuration of **Virtuoso**, run `bash data_preprocess.sh` to finish preprocessing
 
+For this version, set virtuoso at your ~ path because there is a cp command to copy the virtuoso into you CFO/KnowledgeBase/ directory.
+
 # Training
 
 1. Focused Lableing
@@ -30,6 +32,10 @@ Code repo for [Conditional Focused Neural Question Answering with Large-scale Kn
    cd RelationRNN
    th train_rel_rnn.lua
    ```
+   For this step, sometimes it will continuously getting loss == 0. I don't really exactly get the solution. But I change the code place for 
+   >> local ones = torch.ones(loader.batchSize, loader.negSize)
+   
+   into the loop, sometimes it works. Also , I reboot my system(...) for this.
 
 # Inference
 In the following, define `SPLIT='valid' or 'test'`.
@@ -96,8 +102,9 @@ In the following, define `SPLIT='valid' or 'test'`.
    th process_inference.lua -testSplit ${SPLIT}
    th infer_ent_typevec.lua -testData inference-data/ent.${SPLIT}.t7
    ```
+   Actually, if you need to get the 'single' file, you have to modify infer_ent_typevec.lua to change the path of file.
 
-   This step will generate the file `score.ent.multi.multi.${SPLIT}` in the folder `EntityTypeVec`.
+   This step will generate the file `score.ent.multi.${SPLIT}` in the folder `EntityTypeVec`.
 
 6. Run joint disambiguation
 
